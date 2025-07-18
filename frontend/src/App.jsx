@@ -65,8 +65,15 @@ function App() {
       
       if (response.ok) {
         setUsers(data.updatedLeaderboard)
-        setMessage(`${selectedUser.name} claimed ${data.pointsAwarded} points!`)
-        setTimeout(() => setMessage(''), 3000)
+        setMessage(`🎉 ${selectedUser.name} claimed ${data.pointsAwarded} points! 🎉`)
+        setTimeout(() => setMessage(''), 4000)
+        
+        // Add visual feedback
+        const pointsElement = document.querySelector(`[data-user-id="${selectedUser._id}"] .points`)
+        if (pointsElement) {
+          pointsElement.classList.add('points-earned')
+          setTimeout(() => pointsElement.classList.remove('points-earned'), 600)
+        }
       } else {
         setMessage(data.message || 'Error claiming points')
       }
