@@ -13,10 +13,7 @@ const Leaderboard = ({ users }) => {
         {users.map((user, index) => (
           <div key={user._id} className="leaderboard-row" data-user-id={user._id}>
             <div className="rank">
-              {user.rank === 1 && '🥇'}
-              {user.rank === 2 && '🥈'}
-              {user.rank === 3 && '🥉'}
-              {user.rank > 3 && user.rank}
+              {user.rank > 3 ? user.rank : ''}
             </div>
             <div className="name">{user.name}</div>
             <div className="points">{user.totalPoints}</div>
