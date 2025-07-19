@@ -9,13 +9,16 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173", // React dev server
+    origin: ["http://localhost:5173", "https://threew-6pdm.onrender.com"], // React dev server and production
     methods: ["GET", "POST"]
   }
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "https://threew-6pdm.onrender.com"],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes

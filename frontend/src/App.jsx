@@ -6,7 +6,7 @@ import Leaderboard from './components/Leaderboard';
 import AddUserForm from './components/AddUserForm';
 import { io } from 'socket.io-client';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://threew-6pdm.onrender.com/api';
 
 /**
  * The main application component.
@@ -23,7 +23,7 @@ function App() {
 
   useEffect(() => {
     // Initialize Socket.IO connection
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://threew-6pdm.onrender.com';
     const newSocket = io(socketUrl);
     setSocket(newSocket);
 
@@ -67,7 +67,7 @@ function App() {
     } catch (error) {
       console.error('Error fetching users:', error);
       if (error.message === 'Failed to fetch') {
-        setMessage('Cannot connect to server. Please make sure the backend is running on http://localhost:5000');
+        setMessage('Cannot connect to server. Please check your internet connection.');
       } else {
         setMessage(`Error fetching users: ${error.message}`);
       }

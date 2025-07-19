@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
-const API_BASE_URL = 'http://localhost:5000/api'
-// const API_BASE_URL = 'https://threew-frontend-ybsj.onrender.com/api'
+const API_BASE_URL = 'https://threew-6pdm.onrender.com/api'
 
 
 
