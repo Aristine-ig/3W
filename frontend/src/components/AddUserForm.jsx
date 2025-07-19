@@ -44,7 +44,7 @@ const AddUserForm = ({ onUserAdded }) => {
   }
 
   return (
-    <div className="add-user-form">
+    <div className="add-user-form user-selector">
       <h3>Add New User</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

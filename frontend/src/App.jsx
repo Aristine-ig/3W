@@ -6,7 +6,7 @@ import Leaderboard from './components/Leaderboard'
 import AddUserForm from './components/AddUserForm'
 import { io } from 'socket.io-client'
 
-const API_BASE_URL = 'http://localhost:5000/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 function App() {
   const [users, setUsers] = useState([])
@@ -17,7 +17,8 @@ function App() {
 
   useEffect(() => {
     // Initialize Socket.IO connection
-    const newSocket = io('http://localhost:5000')
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000'
+    const newSocket = io(socketUrl)
     setSocket(newSocket)
 
     // Listen for real-time leaderboard updates
@@ -37,11 +38,20 @@ function App() {
   const fetchUsers = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/users`)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
       const data = await response.json()
       setUsers(data)
     } catch (error) {
       console.error('Error fetching users:', error)
-      setMessage('Error fetching users')
+      if (error.message === 'Failed to fetch') {
+        setMessage('Cannot connect to server. Please make sure the backend is running on http://localhost:5000')
+      } else {
+        setMessage(`Error fetching users: ${error.message}`)
+      }
     }
   }
 
