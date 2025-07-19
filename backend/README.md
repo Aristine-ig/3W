@@ -1,102 +1,64 @@
-# Backend API for Real-Time Leaderboard
+# Points System Frontend
 
-This directory contains the backend server for the real-time leaderboard application. It is built with Node.js, Express, and MongoDB, and it uses Socket.IO for real-time communication with the frontend.
+A React-based frontend for the points claiming system with real-time leaderboard updates.
 
 ## Features
 
-- **User Management**: Add new users and retrieve a list of all users with their rankings.
-- **Point-Based Leaderboard**: Users can claim random points, and their total scores are updated in real time.
-- **Claim History**: Track when users claim points.
-- **Real-Time Updates**: The leaderboard is updated instantly across all connected clients using WebSockets.
+- **User Selection**: Dropdown to select from existing users
+- **Add New Users**: Form to add new users to the system
+- **Claim Points**: Button to claim random points (1-10) for selected user
+- **Real-time Leaderboard**: Live updates via Socket.IO
+- **Responsive Design**: Works on desktop and mobile devices
+- **Modern UI**: Beautiful gradient design with smooth animations
 
-## Prerequisites
+## Setup
 
-- [Node.js](https://nodejs.org/) (v18 or later recommended)
-- [npm](https://www.npmjs.com/)
-- A running [MongoDB](https://www.mongodb.com/) instance (either local or on a cloud service like MongoDB Atlas)
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Getting Started
+2. Make sure the backend server is running on `http://localhost:5000`
 
-### 1. Installation
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-Clone the repository and navigate to the `backend` directory. Then, install the required dependencies:
+4. Open your browser to `http://localhost:5173`
 
-```bash
-npm install
-```
+## Components
 
-### 2. Environment Configuration
+- **App.jsx**: Main application component with state management
+- **UserSelector.jsx**: Dropdown for selecting users
+- **ClaimButton.jsx**: Button to claim points
+- **Leaderboard.jsx**: Display users ranked by points
+- **AddUserForm.jsx**: Form to add new users
 
-Create a `.env` file in the `backend` directory. This file will store your environment variables.
+## Features
 
-```
-MONGODB_URI=your_mongodb_connection_string
-PORT=5000
-```
+### User Management
+- View all users with their current points
+- Add new users through the form
+- Select users from dropdown
 
-- `MONGODB_URI`: Your MongoDB connection string.
-- `PORT`: The port on which the server will run (defaults to 5000).
+### Points System
+- Claim random points (1-10) for selected user
+- Real-time updates via Socket.IO
+- Visual feedback for claimed points
 
-### 3. Running the Server
+### Leaderboard
+- Dynamic ranking based on total points
+- Medal icons for top 3 positions
+- Real-time updates when points are claimed
 
-You can run the server in development mode, which automatically restarts on file changes, or in production mode.
+## API Integration
 
-**Development:**
+The frontend connects to the backend API endpoints:
+- `GET /api/users` - Fetch all users
+- `POST /api/users` - Add new user
+- `POST /api/claim` - Claim points for user
 
-```bash
-npm run dev
-```
+## Socket.IO Events
 
-**Production:**
-
-```bash
-npm start
-```
-
-The server will connect to MongoDB and start listening on the specified port.
-
-## API Endpoints
-
-The server exposes the following RESTful API endpoints:
-
-### Users
-
-- `GET /api/users`
-  - **Description**: Retrieves a list of all users, sorted by their total points in descending order. Each user object includes their rank.
-  - **Response**: `200 OK` with an array of user objects.
-
-- `POST /api/users`
-  - **Description**: Creates a new user.
-  - **Request Body**: `{ "name": "string" }`
-  - **Response**: `201 Created` with the newly created user object.
-
-### Claiming Points
-
-- `POST /api/claim`
-  - **Description**: Allows a user to claim a random number of points (between 1 and 10). This endpoint also triggers a real-time update to all connected clients.
-  - **Request Body**: `{ "userId": "string" }`
-  - **Response**: `200 OK` with the number of points awarded and the user's updated data.
-
-### History
-
-- `GET /api/history`
-  - **Description**: Retrieves the entire claim history for all users.
-  - **Query Parameters**:
-    - `userId` (optional): Filter the history for a specific user.
-  - **Response**: `200 OK` with an array of claim history records.
-
-## Real-Time Events (Socket.IO)
-
-The server uses Socket.IO to push real-time updates to connected clients.
-
-- **Event**: `leaderboardUpdate`
-  - **Description**: Emitted whenever a user claims points.
-  - **Payload**: An object containing the updated leaderboard, the user who claimed points, and the number of points awarded.
-
-## Project Structure
-
-- `models/`: Contains the Mongoose schemas for `User` and `ClaimHistory`.
-- `routes/`: Defines the API routes for users, claims, and history.
-- `server.js`: The main entry point for the application, where the server, database connection, and Socket.IO are initialized.
-- `.env`: Stores environment variables (must be created manually).
-- `package.json`: Lists project dependencies and scripts.
+- Listens for `leaderboardUpdate` events for real-time updates
