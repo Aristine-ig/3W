@@ -126,7 +126,7 @@ function App() {
 
   /**
    * Handles the addition of a new user.
-   * @param {object} newUser - The new user object.
+   * 
    */
   const handleUserAdded = (newUser) => {
     setUsers(prev => [...prev, { ...newUser, rank: prev.length + 1 }]);

@@ -1,5 +1,6 @@
-import React from 'react'
+//  Leaderboard component
 
+import React from 'react'
 const Leaderboard = ({ users }) => {
   return (
     <div className="leaderboard">
@@ -10,7 +11,7 @@ const Leaderboard = ({ users }) => {
           <div className="name">Name</div>
           <div className="points">Points</div>
         </div>
-        {users.map((user, index) => (
+        {users.map((user) => (
           <div key={user._id} className="leaderboard-row" data-user-id={user._id}>
             <div className="rank">
               {user.rank > 3 ? user.rank : ''}

@@ -1,5 +1,7 @@
 import React from 'react'
 
+// claim button function
+
 const ClaimButton = ({ onClaim, loading, disabled }) => {
   return (
     <div className="claim-button">
