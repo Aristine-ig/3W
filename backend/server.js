@@ -75,6 +75,7 @@ io.on('connection', (socket) => {
 });
 
 // Make io available to routes
+
 app.set('io', io);
 
 // Update the claim route to emit real-time updates

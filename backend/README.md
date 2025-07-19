@@ -1,53 +1,102 @@
-# Points System Backend
+# Backend API for Real-Time Leaderboard
 
-A Node.js backend for a points claiming system with real-time leaderboard updates.
+This directory contains the backend server for the real-time leaderboard application. It is built with Node.js, Express, and MongoDB, and it uses Socket.IO for real-time communication with the frontend.
 
 ## Features
 
-- User management (add new users)
-- Random points claiming (1-10 points)
-- Real-time leaderboard updates via Socket.IO
-- Claim history tracking
-- MongoDB database integration
+- **User Management**: Add new users and retrieve a list of all users with their rankings.
+- **Point-Based Leaderboard**: Users can claim random points, and their total scores are updated in real time.
+- **Claim History**: Track when users claim points.
+- **Real-Time Updates**: The leaderboard is updated instantly across all connected clients using WebSockets.
 
-## Setup
+## Prerequisites
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+- [Node.js](https://nodejs.org/) (v18 or later recommended)
+- [npm](https://www.npmjs.com/)
+- A running [MongoDB](https://www.mongodb.com/) instance (either local or on a cloud service like MongoDB Atlas)
 
-2. Create a `.env` file with:
-   ```
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/points-system
-   NODE_ENV=development
-   ```
+## Getting Started
 
-3. Start MongoDB server
+### 1. Installation
 
-4. Run the development server:
-   ```bash
-   npm run dev
-   ```
+Clone the repository and navigate to the `backend` directory. Then, install the required dependencies:
+
+```bash
+npm install
+```
+
+### 2. Environment Configuration
+
+Create a `.env` file in the `backend` directory. This file will store your environment variables.
+
+```
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
+```
+
+- `MONGODB_URI`: Your MongoDB connection string.
+- `PORT`: The port on which the server will run (defaults to 5000).
+
+### 3. Running the Server
+
+You can run the server in development mode, which automatically restarts on file changes, or in production mode.
+
+**Development:**
+
+```bash
+npm run dev
+```
+
+**Production:**
+
+```bash
+npm start
+```
+
+The server will connect to MongoDB and start listening on the specified port.
 
 ## API Endpoints
 
-### Users
-- `GET /api/users` - Get all users with rankings
-- `POST /api/users` - Add a new user (body: `{ name: string }`)
+The server exposes the following RESTful API endpoints:
 
-### Claim Points
-- `POST /api/claim` - Claim random points for a user (body: `{ userId: string }`)
+### Users
+
+- `GET /api/users`
+  - **Description**: Retrieves a list of all users, sorted by their total points in descending order. Each user object includes their rank.
+  - **Response**: `200 OK` with an array of user objects.
+
+- `POST /api/users`
+  - **Description**: Creates a new user.
+  - **Request Body**: `{ "name": "string" }`
+  - **Response**: `201 Created` with the newly created user object.
+
+### Claiming Points
+
+- `POST /api/claim`
+  - **Description**: Allows a user to claim a random number of points (between 1 and 10). This endpoint also triggers a real-time update to all connected clients.
+  - **Request Body**: `{ "userId": "string" }`
+  - **Response**: `200 OK` with the number of points awarded and the user's updated data.
 
 ### History
-- `GET /api/history` - Get claim history (query: `?userId=string` for filtering)
 
-## Socket.IO Events
+- `GET /api/history`
+  - **Description**: Retrieves the entire claim history for all users.
+  - **Query Parameters**:
+    - `userId` (optional): Filter the history for a specific user.
+  - **Response**: `200 OK` with an array of claim history records.
 
-- `leaderboardUpdate` - Emitted when points are claimed, includes updated leaderboard
+## Real-Time Events (Socket.IO)
 
-## Default Users
+The server uses Socket.IO to push real-time updates to connected clients.
 
-The system automatically creates 10 default users:
-- Rahul, Kamal, Sanak, Priya, Amit, Neha, Raj, Sita, Vikram, Anjali
+- **Event**: `leaderboardUpdate`
+  - **Description**: Emitted whenever a user claims points.
+  - **Payload**: An object containing the updated leaderboard, the user who claimed points, and the number of points awarded.
+
+## Project Structure
+
+- `models/`: Contains the Mongoose schemas for `User` and `ClaimHistory`.
+- `routes/`: Defines the API routes for users, claims, and history.
+- `server.js`: The main entry point for the application, where the server, database connection, and Socket.IO are initialized.
+- `.env`: Stores environment variables (must be created manually).
+- `package.json`: Lists project dependencies and scripts.
